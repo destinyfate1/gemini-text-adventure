@@ -4,7 +4,7 @@ from github import Github
 from github.GithubException import GithubException
 
 # --- PAGE CONFIGURATION ---
-st.set_page_config(page_title="Adventures in Aethel", page_icon="⚔️")
+st.set_page_config(page_title="Death in Aethel", page_icon="⚔️")
 
 # --- API & GITHUB CONFIGURATION ---
 try:
@@ -44,27 +44,35 @@ def save_progress_to_github(story_string):
         )
         st.sidebar.success("Progress saved to GitHub!")
     except GithubException:
-        # If the file doesn't exist, create it
-        repo.create_file(
-            path=file_path,
-            message="Create save file",
-            content=story_string
-        )
+        repo.create_file(path=file_path, message="Create save file", content=story_string)
         st.sidebar.success("New save file created on GitHub!")
     except Exception as e:
         st.sidebar.error(f"Failed to save: {e}")
 
-def get_story_string_from_history(chat_history):
-    """Formats the chat history into a single string for saving."""
-    story_string = ""
+# --- FIXED: THIS FUNCTION IS NOW CORRECT ---
+def get_full_story_string(initial_story, chat_history):
+    """Formats the entire story (initial + new session) into a single string."""
+    # Start with the story as it was when the session began
+    full_story = initial_story
+    
+    # Add a separator if the initial story isn't empty
+    if full_story and not full_story.isspace():
+        full_story += "\n\n"
+
+    # Now, append the new messages from the current session
     for message in chat_history[2:]: # Skips initial system prompt
         role = "Player" if message.role == "user" else "DM"
-        story_string += f"{role}:\n{message.parts[0].text}\n\n"
-    return story_string
+        full_story += f"{role}:\n{message.parts[0].text}\n\n"
+    
+    return full_story.strip()
 
 # --- SESSION STATE INITIALIZATION ---
 if "chat" not in st.session_state:
     story_so_far = get_file_content("Story so far.txt", "This is the beginning of a new adventure.")
+    
+    # --- FIXED: REMEMBER THE INITIAL STORY ---
+    st.session_state.initial_story = story_so_far
+    
     lore_content = get_file_content("lore.html", "No lore was provided.")
     dm_instructions = get_file_content("dm_instructions.txt", "You are a helpful assistant.")
 
@@ -77,11 +85,11 @@ if "chat" not in st.session_state:
     
     st.session_state.chat = model.start_chat(history=[
         {'role': 'user', 'parts': [initial_prompt]},
-        {'role': 'model', 'parts': ["The world of Aethel is established, the story continues from where we left off. What is your next action?"]}
+        {'role': 'model', 'parts': ["The world of Aethel is established, and the story continues from where we left off. What is your next action?"]}
     ])
 
 # --- UI RENDERING ---
-st.title("Total War Gemini")
+st.title("⚔️ Adventures in Aethel")
 st.caption("Your progress is loaded directly from GitHub.")
 
 for message in st.session_state.chat.history[2:]:
@@ -100,5 +108,6 @@ if prompt := st.chat_input("What is your next action?"):
 with st.sidebar:
     st.header("Game Controls")
     if st.button("💾 Save Progress to GitHub"):
-        story_text = get_story_string_from_history(st.session_state.chat.history)
-        save_progress_to_github(story_text)
+        # Use the corrected logic to get the full story
+        full_story_text = get_full_story_string(st.session_state.initial_story, st.session_state.chat.history)
+        save_progress_to_github(full_story_text)
