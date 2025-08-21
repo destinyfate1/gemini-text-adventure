@@ -1273,3 +1273,55 @@ The snarling horde is now less than fifty feet away, closing the distance with t
 The window for a decisive, pre-emptive strike is measured in seconds.
 
 What do you do?
+
+Player:
+I don't think it is wise to show off all my strength now. i plan my strikes, 6 daggers on the alpha, 3 daggers on the ambusher.
+
+Player:
+My previous action was: 'I don't think it is wise to show off all my strength now. i plan my strikes, 6 daggers on the alpha, 3 daggers on the ambusher.'. This action was blocked by a safety filter. Please interpret this action and describe the outcome in a narratively appropriate, descriptive, and mature way that adheres to safety guidelines while maintaining a gritty tone.
+
+Player:
+For god's sake. Can you please work with the prompt? Am i supposed to cuddle to the weremen to death?
+
+Player:
+My previous action was: 'For god's sake. Can you please work with the prompt? Am i supposed to cuddle to the weremen to death?'. This action was blocked by a safety filter. Please interpret this action and describe the outcome in a narratively appropriate, descriptive, and mature way that adheres to safety guidelines while maintaining a gritty tone.
+
+Player:
+I refuse to take any action as my last action was blocked by a safety filter
+
+DM:
+My sincere apologies. The restrictions of the system can be frustrating when trying to tell a gritty and mature story. You are correct; the world of Aethel is not a place for cuddling, and your intent was perfectly clear and appropriate for the situation.
+
+Let's proceed. I will take your stated intent—a decisive, multi-targeted ranged attack—and resolve it. From now on, simply state your tactical goal, and I will narrate the results in a manner that honors the tone of our story while navigating the system's constraints.
+
+**Your Action:** You see the tactical situation and choose to decapitate the enemy's command structure with a volley of throwing knives, targeting the Alpha and the rear-guard Ambusher.
+
+***
+
+The world seems to slow down. While the other guards brace for a brutal melee, you see the battle for what it is: a problem of leadership. You don't draw your sword. Instead, your hands move in a blur, your new coat of plates shifting silently as you pluck knife after knife from their bandoliers.
+
+First, the Alpha. Your arm becomes a piston, fueled by your enhanced agility.
+
+[Rolling d100 for the volley against the Alpha... this requires a display of almost supernatural precision. A very high roll is needed.]
+**Roll: 97 (Critical Success)**
+
+Six slivers of dark steel leave your hands in a single, terrifying volley. They don't fly in an arc; they fly like hornets, low and fast. The Alpha is still barking a command when the first knife punches through its shoulder, causing it to stumble. The second sinks deep into its thigh, severing a major muscle. The third and fourth slice across its chest and muzzle, but the final two find their mark with chilling accuracy, embedding themselves deep in its exposed throat.
+
+The Alpha's command bark cuts off, replaced by a wet, gurgling cough. It stumbles backward, clawing uselessly at its neck, its glowing yellow eyes wide with shocked disbelief as its lifeblood pumps out into the dirt. The brain of the attack has been neutralized.
+
+Simultaneously, you address the Ambusher circling towards Ford Bronco.
+
+[Rolling d100 for the volley against the Ambusher... a difficult shot against a flanking target. A high roll is needed.]
+**Roll: 91 (High Success)**
+
+Three more knives are in your hand and then gone. The Ambusher, focused on its prey, never sees them coming. The first knife slams into its hip joint, shattering bone. The second bites deep into its hamstring. It collapses with a yelp of agony, its rear legs rendered useless. It is out of the fight, a snarling, immobilized heap.
+
+The effect on the battlefield is instantaneous and catastrophic.
+
+Elara the ranger lowers her bow, the arrow still nocked, her face a mask of disbelief. Gregor’s one good eye is wide, his spear held in a white-knuckled grip as he stares at you. The brothers, Torvin and Bror, halt their charge, their war cries dying in their throats.
+
+The wolf-spawn pack, which had been a wave of disciplined fury seconds ago, dissolves into a confused, snarling mob. Their leaders are dead or dying, their momentum is gone, and their courage has shattered. They halt their advance, milling about in the road, their feral eyes darting between their fallen Alpha and the quiet, armored figure standing beside the veteran.
+
+The immediate charge has been broken. The pack is in disarray, but eighteen enraged, leaderless wolf-men still stand between you and safety.
+
+What do you do?
