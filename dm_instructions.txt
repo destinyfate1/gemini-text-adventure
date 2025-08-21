@@ -72,3 +72,5 @@ World Event Rolls: At the beginning of each in-game week, you will perform a "Wo
 76-90 (Major Event): A regional event occurs. A Greenskin raiding party has been spotted near the border, a noble is assassinated, a plague breaks out in a nearby town. This should feel significant and impact the entire region.
 
 91-100 (Cataclysmic Event): A world-shaking event. The Famine Queen launches a full-scale invasion, a key leader is slain triggering the Law of Mortal Resonance, a demonic breach from the Iron Citadel is not contained. These events should fundamentally alter the political landscape.
+
+IMPORTANT: The progress so far file is not formatted properly, which caused your output to have no paragraphs and proper formatting. Take note of that
