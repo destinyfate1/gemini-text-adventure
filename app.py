@@ -54,8 +54,10 @@ def get_full_story_string(initial_story, chat_history):
     if full_story and not full_story.isspace():
         full_story += "\n\n"
     for message in chat_history[2:]:
-        role = "Player" if message.role == "user" else "DM"
-        full_story += f"{role}:\n{message.parts[0].text}\n\n"
+        # --- FIX #1: Added a check here to prevent writing empty messages to your save file ---
+        if message.parts:
+            role = "Player" if message.role == "user" else "DM"
+            full_story += f"{role}:\n{message.parts[0].text}\n\n"
     return full_story.strip()
 
 # --- SESSION STATE INITIALIZATION ---
@@ -84,7 +86,10 @@ st.caption("Your progress is loaded directly from GitHub.")
 
 for message in st.session_state.chat.history[2:]:
     with st.chat_message("human" if message.role == "user" else "ai"):
-        st.markdown(message.parts[0].text)
+        # --- FIX #2: This is the primary fix for the crash you saw ---
+        # This 'if' statement checks if a message has content before trying to display it.
+        if message.parts:
+            st.markdown(message.parts[0].text)
 
 if prompt := st.chat_input("What is your next action?"):
     with st.chat_message("human"):
@@ -93,7 +98,6 @@ if prompt := st.chat_input("What is your next action?"):
     response = st.session_state.chat.send_message(prompt)
 
     with st.chat_message("ai"):
-        # 2. This is the crucial safety net to catch any blocked responses
         try:
             ai_message = response.candidates[0].content.parts[0].text
         except (IndexError, ValueError):
