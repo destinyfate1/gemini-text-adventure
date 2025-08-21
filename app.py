@@ -1,7 +1,7 @@
 import streamlit as st
-# --- CORRECTED: Reverted to the correct import style ---
 import google.generativeai as genai
-from google.generativeai import types
+# --- UPDATED: Using the more direct import style for safety settings ---
+from google.generativeai.types import HarmCategory, HarmBlockThreshold
 from github import Github
 from github.GithubException import GithubException
 from google.api_core import exceptions
@@ -11,30 +11,19 @@ st.set_page_config(page_title="Sleep in Aethel", page_icon="⚔️")
 
 # --- API & GITHUB CONFIGURATION ---
 try:
-    # --- CORRECTED: Safety settings now correctly use the 'types' prefix ---
-    safety_settings = [
-        types.SafetySetting(
-            category=types.HarmCategory.HARM_CATEGORY_HARASSMENT,
-            threshold=types.HarmBlockThreshold.BLOCK_NONE,
-        ),
-        types.SafetySetting(
-            category=types.HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-            threshold=types.HarmBlockThreshold.BLOCK_NONE,
-        ),
-        types.SafetySetting(
-            category=types.HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
-            threshold=types.HarmBlockThreshold.BLOCK_NONE,
-        ),
-        types.SafetySetting(
-            category=types.HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
-            threshold=types.HarmBlockThreshold.BLOCK_NONE,
-        ),
-    ]
-
     # Configure Gemini API using the 'genai' alias
     genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
-    # Model initialization now uses the 'genai' alias
-    model = genai.GenerativeModel('gemini-2.5-pro', safety_settings=safety_settings)
+    
+    # --- UPDATED: Safety settings now use the dictionary format ---
+    model = genai.GenerativeModel(
+        model_name='gemini-2.5-pro',
+        safety_settings={
+            HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: HarmBlockThreshold.BLOCK_NONE,
+            HarmCategory.HARM_CATEGORY_HATE_SPEECH: HarmBlockThreshold.BLOCK_NONE,
+            HarmCategory.HARM_CATEGORY_HARASSMENT: HarmBlockThreshold.BLOCK_NONE,
+            HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT: HarmBlockThreshold.BLOCK_NONE,
+        }
+    )
 
     # Configure GitHub API
     g = Github(st.secrets["GITHUB_TOKEN"])
