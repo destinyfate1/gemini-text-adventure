@@ -17,7 +17,7 @@ try:
         'HARM_CATEGORY_SEXUALLY_EXPLICIT': 'BLOCK_NONE',
         'HARM_CATEGORY_DANGEROUS_CONTENT': 'BLOCK_NONE',
     }
-    model = genai.GenerativeModel('gemini-2.5-pro')
+    model = genai.GenerativeModel('gemini-2.5-pro', safety_settings=safety_settings)
 
     # Configure GitHub API
     g = Github(st.secrets["GITHUB_TOKEN"])
