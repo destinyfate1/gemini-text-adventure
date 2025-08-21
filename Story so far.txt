@@ -1218,7 +1218,6 @@ Your mind becomes a laboratory. You theorize a new combat style: 'Variable Mass 
 
 "See something interesting out there, boy?" Gregor’s gruff voice cuts through your concentration. You have been staring intently at your hand axe for the better part of an hour. "Just thinking," you murmur. Gregor grunts, his one good eye narrowing. He knows the quiet, strange boy walking beside him is more than he seems. And he is, for the first time, a little bit afraid of what that might be.
 
-
 Player:
 I look at Gregor and before i can reply, the dice rolls for a hostile encounter in the evening. 
 
@@ -1245,9 +1244,3 @@ Aldric is already shouting, his voice tight with panic. The brothers, Torvin and
 They are closing fast, a wave of muscle and fang intent on tearing the caravan and its occupants to pieces.
 
 What do you do?
-
-Player:
-I identify the highest value targets and aim for the weak spots. Eye, scrotum, throat. I have 12 throwing daggers.
-
-Player:
-I cannot see your response. Why is that?
