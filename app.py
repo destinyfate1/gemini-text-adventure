@@ -1,7 +1,6 @@
 import streamlit as st
-import google.generativeai as genai
-# --- NEW: Import the 'types' module for the updated safety settings syntax ---
-from google.generativeai import types
+# --- UPDATED: Using the direct import style for all necessary components ---
+from google.generativeai import GenerativeModel, configure, SafetySetting, HarmCategory, HarmBlockThreshold
 from github import Github
 from github.GithubException import GithubException
 from google.api_core import exceptions
@@ -11,30 +10,30 @@ st.set_page_config(page_title="Sleep in Aethel", page_icon="⚔️")
 
 # --- API & GITHUB CONFIGURATION ---
 try:
-    # --- UPDATED: Safety settings now use the new, more structured format ---
+    # --- UPDATED: Safety settings now use the direct class names ---
     safety_settings = [
-        types.SafetySetting(
-            category=types.HarmCategory.HARM_CATEGORY_HARASSMENT,
-            threshold=types.HarmBlockThreshold.BLOCK_NONE,
+        SafetySetting(
+            category=HarmCategory.HARM_CATEGORY_HARASSMENT,
+            threshold=HarmBlockThreshold.BLOCK_NONE,
         ),
-        types.SafetySetting(
-            category=types.HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-            threshold=types.HarmBlockThreshold.BLOCK_NONE,
+        SafetySetting(
+            category=HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+            threshold=HarmBlockThreshold.BLOCK_NONE,
         ),
-        types.SafetySetting(
-            category=types.HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
-            threshold=types.HarmBlockThreshold.BLOCK_NONE,
+        SafetySetting(
+            category=HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+            threshold=HarmBlockThreshold.BLOCK_NONE,
         ),
-        types.SafetySetting(
-            category=types.HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
-            threshold=types.HarmBlockThreshold.BLOCK_NONE,
+        SafetySetting(
+            category=HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+            threshold=HarmBlockThreshold.BLOCK_NONE,
         ),
     ]
 
-    # Configure Gemini API
-    genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
-    # Model initialization now uses the new safety_settings list
-    model = genai.GenerativeModel('gemini-2.5-pro', safety_settings=safety_settings)
+    # Configure Gemini API using the direct function
+    configure(api_key=st.secrets["GOOGLE_API_KEY"])
+    # Model initialization now uses the direct class name and corrected model name
+    model = GenerativeModel('gemini-2.5-pro', safety_settings=safety_settings)
 
     # Configure GitHub API
     g = Github(st.secrets["GITHUB_TOKEN"])
@@ -77,10 +76,6 @@ def get_full_story_string(initial_story, chat_history):
     return full_story.strip()
 
 def get_story_summary(full_story_text, num_interactions=5):
-    """
-    Extracts the last few interactions (Player + DM turns) from the story log.
-    This summary is only for the player to see, the AI gets the full context.
-    """
     if not full_story_text or full_story_text.isspace():
         return "No story history to summarize."
 
