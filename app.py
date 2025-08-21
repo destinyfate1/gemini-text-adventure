@@ -12,7 +12,7 @@ st.set_page_config(
 try:
     # Get API key from Streamlit secrets
     genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
-    model = genai.GenerativeModel('gemini-1.5-pro-latest')
+    model = genai.GenerativeModel('gemini-2.5-pro')
 except Exception as e:
     st.error(f"Error configuring the API. Have you set your GOOGLE_API_KEY in secrets.toml? Error: {e}", icon="🚨")
     st.stop()
@@ -105,7 +105,7 @@ if "chat" not in st.session_state:
 
 
 # --- UI RENDERING ---
-st.title("⚔️ Adventures in Aethel")
+st.title("Total War: Aethel")
 st.caption("A Text-Based Adventure by Gemini & You")
 
 # Display the chat history
