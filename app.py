@@ -22,7 +22,7 @@ try:
 
     # Configure GitHub API
     g = Github(st.secrets["GITHUB_TOKEN"])
-    repo = g.get_repo("YourUsername/YourRepoName") # IMPORTANT: Change this line
+    repo = g.get_repo("destinyfate1/gemini-text-adventure") # IMPORTANT: Change this line
     
 except Exception as e:
     st.error(f"Error during initial configuration. Check your secrets. Error: {e}", icon="🚨")
