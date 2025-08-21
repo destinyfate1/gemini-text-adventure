@@ -1,7 +1,7 @@
 import streamlit as st
 import google.generativeai as genai
-# --- UPDATED: Using the more direct import style for safety settings ---
-from google.generativeai.types import HarmCategory, HarmBlockThreshold
+# --- CORRECTED: Reverted to the correct import style that uses the 'types' module ---
+from google.generativeai import types
 from github import Github
 from github.GithubException import GithubException
 from google.api_core import exceptions
@@ -14,14 +14,14 @@ try:
     # Configure Gemini API using the 'genai' alias
     genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
     
-    # --- UPDATED: Safety settings now use the dictionary format ---
+    # --- CORRECTED: Safety settings now correctly use the 'types' prefix with the dictionary format ---
     model = genai.GenerativeModel(
         model_name='gemini-2.5-pro',
         safety_settings={
-            HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: HarmBlockThreshold.BLOCK_NONE,
-            HarmCategory.HARM_CATEGORY_HATE_SPEECH: HarmBlockThreshold.BLOCK_NONE,
-            HarmCategory.HARM_CATEGORY_HARASSMENT: HarmBlockThreshold.BLOCK_NONE,
-            HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT: HarmBlockThreshold.BLOCK_NONE,
+            types.HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: types.HarmBlockThreshold.BLOCK_NONE,
+            types.HarmCategory.HARM_CATEGORY_HATE_SPEECH: types.HarmBlockThreshold.BLOCK_NONE,
+            types.HarmCategory.HARM_CATEGORY_HARASSMENT: types.HarmBlockThreshold.BLOCK_NONE,
+            types.HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT: types.HarmBlockThreshold.BLOCK_NONE,
         }
     )
 
@@ -134,9 +134,50 @@ if prompt := st.chat_input("What is your next action?"):
         
     st.rerun()
 
-# --- SIDEBAR & SAVE BUTTON ---
+# --- SIDEBAR & GAME CONTROLS ---
 with st.sidebar:
     st.header("Game Controls")
+    
+    # Save Progress Button
     if st.button("💾 Save Progress to GitHub"):
         full_story_text = get_full_story_string(st.session_state.initial_story, st.session_state.chat.history)
         save_progress_to_github(full_story_text)
+
+    st.markdown("---") # Visual separator
+
+    # --- NEW: REGENERATE AND UNDO BUTTONS ---
+    
+    # Check if there is a history to interact with
+    if len(st.session_state.chat.history) > 2:
+        
+        # Regenerate Last Response Button
+        if st.button("🔄 Regenerate Last Response"):
+            # Pop the last AI response from the history
+            if st.session_state.chat.history[-1].role == "model":
+                st.session_state.chat.history.pop()
+                # The last message is now the user's prompt, so we resend it
+                last_user_prompt = st.session_state.chat.history[-1].parts[0].text
+                
+                try:
+                    response = st.session_state.chat.send_message(last_user_prompt)
+                    ai_message = response.candidates[0].content.parts[0].text
+                except (IndexError, ValueError):
+                    ai_message = "⚠️ **Regeneration blocked by safety filter.**"
+                except exceptions.InternalServerError:
+                    ai_message = "⚠️ **Server error during regeneration.** Please try again."
+                except Exception as e:
+                    ai_message = f"An unexpected error occurred: {e}"
+                
+                # We need to manually add the new response back to the history
+                st.session_state.chat.history.append(genai.types.Content(parts=[genai.types.Part(text=ai_message)], role="model"))
+                st.rerun()
+
+        # Undo Last Turn Button (removes player prompt and AI response)
+        if st.button("⏪ Undo Last Turn"):
+            # Pop the last AI response
+            if st.session_state.chat.history[-1].role == "model":
+                st.session_state.chat.history.pop()
+            # Pop the last player prompt
+            if st.session_state.chat.history[-1].role == "user":
+                st.session_state.chat.history.pop()
+            st.rerun()
