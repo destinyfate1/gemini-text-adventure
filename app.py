@@ -106,23 +106,41 @@ if prompt := st.chat_input("What is your next action?"):
     with st.chat_message("human"):
         st.markdown(prompt)
     
-    # Process local commands or send to AI
     prompt_lower = prompt.lower()
     if "roll" in prompt_lower:
+        st.session_state.chat.history.append({'role': 'user', 'parts': [{'text': prompt}]})
         roll = random.randint(1, 100)
         ai_message = f"[Rolling d100... Result: {roll}]"
         st.session_state.chat.history.append({'role': 'model', 'parts': [{'text': ai_message}]})
+        with st.chat_message("ai"):
+            st.markdown(ai_message)
     else:
         try:
+            # --- FAILSAFE 1: ATTEMPT TO GET RESPONSE ---
             response = st.session_state.chat.send_message(prompt)
             ai_message = response.text
         except ValueError:
-            ai_message = "⚠️ **The AI's response was blocked by a safety filter.** Please try a different action or rephrase your last one."
+            # --- FAILSAFE 2: AUTOMATIC RETRY ON BLOCK ---
+            # If the first attempt is blocked, create a new prompt asking the AI to reinterpret.
+            retry_prompt = (
+                f"My previous action was: '{prompt}'. This action was blocked by a safety filter. "
+                "Please interpret this action and describe the outcome in a narratively appropriate, "
+                "descriptive, and mature way that adheres to safety guidelines while maintaining a gritty tone."
+            )
+            try:
+                # Send the modified prompt
+                response = st.session_state.chat.send_message(retry_prompt)
+                ai_message = response.text
+            except Exception as e:
+                # --- FAILSAFE 3: IMMERSIVE FINAL ERROR ---
+                # If even the retry fails, show an in-character message.
+                ai_message = f"⚔️ **A strange force seems to prevent that action. The threads of fate resist. Perhaps you should try a different approach?** (Error: {e})"
         except Exception as e:
             ai_message = f"An unexpected error occurred: {e}"
 
-    with st.chat_message("ai"):
-        st.markdown(ai_message)
+        with st.chat_message("ai"):
+            st.markdown(ai_message)
+
     st.rerun()
 
 # --- SIDEBAR & GAME CONTROLS ---
@@ -139,9 +157,29 @@ with st.sidebar:
         if st.button("🔄 Regenerate Last Response"):
             if st.session_state.chat.history[-1].role == "model":
                 st.session_state.chat.history.pop()
-                st.rerun()
+                last_user_prompt = st.session_state.chat.history.pop()
+                st.session_state.resend_prompt = last_user_prompt.parts[0].text
 
         if st.button("⏪ Undo Last Turn"):
             if st.session_state.chat.history[-1].role == "model": st.session_state.chat.history.pop()
             if st.session_state.chat.history[-1].role == "user": st.session_state.chat.history.pop()
             st.rerun()
+
+if "resend_prompt" in st.session_state and st.session_state.resend_prompt:
+    prompt_to_resend = st.session_state.resend_prompt
+    st.session_state.resend_prompt = None
+    
+    with st.chat_message("human"):
+        st.markdown(prompt_to_resend)
+    
+    try:
+        response = st.session_state.chat.send_message(prompt_to_resend)
+        ai_message = response.text
+    except ValueError:
+        ai_message = "⚠️ **The AI's response was blocked by a safety filter.** Please try a different action or rephrase your last one."
+    except Exception as e:
+        ai_message = f"An unexpected error occurred: {e}"
+
+    with st.chat_message("ai"):
+        st.markdown(ai_message)
+    st.rerun()
