@@ -10,7 +10,7 @@ st.set_page_config(page_title="Adventures in Aethel", page_icon="⚔️")
 try:
     # Configure Gemini API
     genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
-    model = genai.GenerativeModel('gemini-1.5-pro-latest')
+    model = genai.GenerativeModel('gemini-2.5-pro')
 
     # Configure GitHub API
     g = Github(st.secrets["GITHUB_TOKEN"])
