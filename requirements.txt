@@ -1,3 +1,5 @@
 streamlit
-google-generativeai
+# By specifying a version, we ensure Streamlit installs a modern library
+# that includes the types.SafetySetting class.
+google-generativeai>=0.5.0
 PyGithub
