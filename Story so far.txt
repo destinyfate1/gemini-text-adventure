@@ -1217,3 +1217,31 @@ Your mind becomes a laboratory. You theorize a new combat style: 'Variable Mass 
     Phase 3: The Refinement. Add a simultaneous field to create a perfect aerodynamic envelope, eliminating air resistance. Apply the concept to your shield to make it an immovable anchor, or to your own body for absolute stability.
 
 "See something interesting out there, boy?" Gregor’s gruff voice cuts through your concentration. You have been staring intently at your hand axe for the better part of an hour. "Just thinking," you murmur. Gregor grunts, his one good eye narrowing. He knows the quiet, strange boy walking beside him is more than he seems. And he is, for the first time, a little bit afraid of what that might be.
+
+
+Player:
+I look at Gregor and before i can reply, the dice rolls for a hostile encounter in the evening. 
+
+DM:
+You look at Gregor, the veteran’s single eye a cynical, probing instrument. You open your mouth to formulate a reply, something to deflect or disarm his suspicion, but the words never come.
+
+[Rolling d100 for a travel event as the sun sets...]
+**Roll: 87 (Hostile Encounter: Coordinated Ambush)**
+
+A sharp, snake-like hiss cuts through the evening air.
+
+Up at the head of the column, Elara the ranger has frozen mid-stride, her body coiled like a spring. Her hand is raised in a tight fist, the universal signal for *halt and silence*. The caravan grinds to a clumsy stop, the drivers pulling hard on their reins.
+
+The road ahead is flanked by a dense, dark wood, the trees casting long, skeletal shadows in the dying light. For a moment, there is only the sound of the wind whispering through the leaves and the nervous snorting of the draft animals. Then, from within that gloom, a new sound begins to grow—a low, guttural chorus of growls that raises the hair on your arms.
+
+They emerge not with a charge, but with a predatory, loping gait. They are figures of primal nightmare, half-man, half-wolf, their bodies corded with lean muscle and covered in coarse, matted fur ranging from jet-black to grizzled grey. Their eyes glow with a feral, yellow light in the dusk. They carry crude, heavy axes and sharpened spears, but their true weapons are the wicked, yellowed claws tipping their powerful hands. Progenitor Beastmen.
+
+There are at least twenty of them, pouring from the trees on both sides of the road, fanning out to envelop the caravan.
+
+"Wolf-spawn!" Gregor snarls, the name a curse on his lips. His weariness evaporates, replaced by the grim focus of a survivor. He plants his feet, the butt of his heavy spear digging into the dirt, forming a wall between himself and Aldric’s wagon. "Circle up! Protect the master!"
+
+Aldric is already shouting, his voice tight with panic. The brothers, Torvin and Bror, let out bellowing war cries, hefting their great-axes as they move to guard the opposite side. At the front, Elara has already nocked an arrow, her bowstring drawn taut as she tracks the largest of the creatures, a hulking brute with scarred, black fur.
+
+They are closing fast, a wave of muscle and fang intent on tearing the caravan and its occupants to pieces.
+
+What do you do?
