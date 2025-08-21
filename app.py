@@ -1,5 +1,7 @@
 import streamlit as st
 import google.generativeai as genai
+# --- NEW: Import the 'types' module for the updated safety settings syntax ---
+from google.generativeai import types
 from github import Github
 from github.GithubException import GithubException
 from google.api_core import exceptions
@@ -9,17 +11,29 @@ st.set_page_config(page_title="Sleep in Aethel", page_icon="⚔️")
 
 # --- API & GITHUB CONFIGURATION ---
 try:
-    # Permissive Safety Settings to reduce blocks
-    safety_settings = {
-        'HARM_CATEGORY_HARASSMENT': 'BLOCK_NONE',
-        'HARM_CATEGORY_HATE_SPEECH': 'BLOCK_NONE',
-        'HARM_CATEGORY_SEXUALLY_EXPLICIT': 'BLOCK_NONE',
-        'HARM_CATEGORY_DANGEROUS_CONTENT': 'BLOCK_NONE',
-    }
+    # --- UPDATED: Safety settings now use the new, more structured format ---
+    safety_settings = [
+        types.SafetySetting(
+            category=types.HarmCategory.HARM_CATEGORY_HARASSMENT,
+            threshold=types.HarmBlockThreshold.BLOCK_NONE,
+        ),
+        types.SafetySetting(
+            category=types.HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+            threshold=types.HarmBlockThreshold.BLOCK_NONE,
+        ),
+        types.SafetySetting(
+            category=types.HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+            threshold=types.HarmBlockThreshold.BLOCK_NONE,
+        ),
+        types.SafetySetting(
+            category=types.HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+            threshold=types.HarmBlockThreshold.BLOCK_NONE,
+        ),
+    ]
 
     # Configure Gemini API
     genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
-    # Corrected model name to the latest valid version
+    # Model initialization now uses the new safety_settings list
     model = genai.GenerativeModel('gemini-2.5-pro', safety_settings=safety_settings)
 
     # Configure GitHub API
@@ -62,7 +76,6 @@ def get_full_story_string(initial_story, chat_history):
             full_story += f"{role}:\n{message.parts[0].text}\n\n"
     return full_story.strip()
 
-# --- NEW FUNCTION TO SUMMARIZE THE STORY FOR THE PLAYER ---
 def get_story_summary(full_story_text, num_interactions=5):
     """
     Extracts the last few interactions (Player + DM turns) from the story log.
@@ -71,17 +84,13 @@ def get_story_summary(full_story_text, num_interactions=5):
     if not full_story_text or full_story_text.isspace():
         return "No story history to summarize."
 
-    # An "interaction" is one Player turn and one DM turn.
-    # We split by the role markers to count turns.
     turns = full_story_text.strip().split("Player:")
-    if len(turns) < 2: # Not enough content to summarize
+    if len(turns) < 2:
         turns = full_story_text.strip().split("DM:")
 
-    # Get the last N interactions
     last_turns = turns[-num_interactions:]
     
     summary = "Player:".join(last_turns).strip()
-    # A simple way to re-add the first "Player:" if it was removed
     if not summary.startswith("Player:") and "DM:" in summary:
          summary = "Player:" + summary
 
@@ -112,12 +121,9 @@ if "chat" not in st.session_state:
 st.title("⚔️ Adventures in Aethel")
 st.caption("Your progress is loaded directly from GitHub.")
 
-# --- NEW: Display the story summary when the app loads ---
 if 'initial_story' in st.session_state:
     st.info(get_story_summary(st.session_state.initial_story))
 
-
-# Display only the new messages for the current session
 for message in st.session_state.chat.history[2:]:
     with st.chat_message("human" if message.role == "user" else "ai"):
         if message.parts:
