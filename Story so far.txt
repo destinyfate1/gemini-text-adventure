@@ -1244,3 +1244,32 @@ Aldric is already shouting, his voice tight with panic. The brothers, Torvin and
 They are closing fast, a wave of muscle and fang intent on tearing the caravan and its occupants to pieces.
 
 What do you do?
+
+
+Player:
+I identify the high value targets. Weak points: Eye, Throat, Crotch.
+
+DM:
+    **Acknowledged. Commencing threat assessment and multi-vector targeting analysis...**
+
+The world snaps into a grid of cold, blue light. The chaotic scene of snarling muzzles and bristling fur resolves into a tactical overlay. Your [Lord of the Ascendant State] ability provides an intuitive, instinctual layer to the data, highlighting the subtle flow of command within the wolf-pack.
+
+**High-Value Targets Identified:**
+
+1.  **[Alpha Predator]:** The massive, black-furred beast at the center. It is not charging recklessly but directing the attack with sharp barks and hand gestures. He is the brain. Elara's arrow is aimed squarely at its chest, a solid but likely non-lethal shot given its bulk.
+    *   *Optimal Solutions:* [Right Eye], [Throat - Exposed during bark command].
+
+2.  **[Flank Leader - Left]:** A lean, grey-furred wolf-man moving with unnerving speed along the left side of the road. It is ignoring the frontline fighters and making a direct line for the third wagon, where Aldric is cowering. A strategic threat.
+    *   *Optimal Solutions:* [Throat], [Left Femoral Artery - Crotch/Inner Thigh].
+
+3.  **[Flank Leader - Right]:** A powerfully built beast with reddish fur, leading the charge against the brothers, Torvin and Bror. Its goal is to tie up the caravan's heavy hitters in a direct melee, allowing the others to swarm the softer targets.
+    *   *Optimal Solutions:* [Left Eye], [Throat].
+
+4.  **[Ambusher]:** A smaller, darker wolf-man that has broken from the main pack and is circling wide towards the rear. It has noticed Ford Bronco standing unguarded. A personal threat to your assets.
+    *   *Optimal Solutions:* [Right Eye], [Right Achilles Tendon].
+
+The snarling horde is now less than fifty feet away, closing the distance with terrifying speed. Elara's bowstring is humming with tension. Gregor has braced his spear. The brothers are roaring back at the beasts.
+
+The window for a decisive, pre-emptive strike is measured in seconds.
+
+What do you do?
