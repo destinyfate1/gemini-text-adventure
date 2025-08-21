@@ -4,25 +4,25 @@ from github import Github
 from github.GithubException import GithubException
 
 # --- PAGE CONFIGURATION ---
-st.set_page_config(page_title="Death in Aethel", page_icon="⚔️")
+st.set_page_config(page_title="Sleep in Aethel", page_icon="⚔️")
 
 # --- API & GITHUB CONFIGURATION ---
 try:
-    # Configure Gemini API
-    genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
-    # --- NEW: Added safety settings to be more tolerant of fantasy content ---
+    # 1. Permissive Safety Settings to reduce blocks
     safety_settings = {
         'HARM_CATEGORY_HARASSMENT': 'BLOCK_NONE',
         'HARM_CATEGORY_HATE_SPEECH': 'BLOCK_NONE',
         'HARM_CATEGORY_SEXUALLY_EXPLICIT': 'BLOCK_NONE',
         'HARM_CATEGORY_DANGEROUS_CONTENT': 'BLOCK_NONE',
     }
+
+    # Configure Gemini API
+    genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
     model = genai.GenerativeModel('gemini-2.5-pro', safety_settings=safety_settings)
 
     # Configure GitHub API
     g = Github(st.secrets["GITHUB_TOKEN"])
-    # IMPORTANT: Replace with your own GitHub username and repository name
-    repo = g.get_repo("destinyfate1/gemini-text-adventure") 
+    repo = g.get_repo("YourUsername/YourRepoName") # IMPORTANT: Change this line
     
 except Exception as e:
     st.error(f"Error during initial configuration. Check your secrets. Error: {e}", icon="🚨")
@@ -30,7 +30,6 @@ except Exception as e:
 
 # --- HELPER FUNCTIONS ---
 def get_file_content(file_path, default_content=""):
-    """Gets content of a file from the GitHub repo."""
     try:
         file = repo.get_contents(file_path)
         return file.decoded_content.decode("utf-8")
@@ -39,16 +38,10 @@ def get_file_content(file_path, default_content=""):
         return default_content
 
 def save_progress_to_github(story_string):
-    """Saves the story progress back to the 'Story so far.txt' file in GitHub."""
     file_path = "Story so far.txt"
     try:
         contents = repo.get_contents(file_path)
-        repo.update_file(
-            path=contents.path,
-            message="Game progress saved",
-            content=story_string,
-            sha=contents.sha
-        )
+        repo.update_file(path=contents.path, message="Game progress saved", content=story_string, sha=contents.sha)
         st.sidebar.success("Progress saved to GitHub!")
     except GithubException:
         repo.create_file(path=file_path, message="Create save file", content=story_string)
@@ -56,28 +49,18 @@ def save_progress_to_github(story_string):
     except Exception as e:
         st.sidebar.error(f"Failed to save: {e}")
 
-# --- FIXED: THIS FUNCTION IS NOW CORRECT ---
 def get_full_story_string(initial_story, chat_history):
-    """Formats the entire story (initial + new session) into a single string."""
-    # Start with the story as it was when the session began
     full_story = initial_story
-    
-    # Add a separator if the initial story isn't empty
     if full_story and not full_story.isspace():
         full_story += "\n\n"
-
-    # Now, append the new messages from the current session
-    for message in chat_history[2:]: # Skips initial system prompt
+    for message in chat_history[2:]:
         role = "Player" if message.role == "user" else "DM"
         full_story += f"{role}:\n{message.parts[0].text}\n\n"
-    
     return full_story.strip()
 
 # --- SESSION STATE INITIALIZATION ---
 if "chat" not in st.session_state:
     story_so_far = get_file_content("Story so far.txt", "This is the beginning of a new adventure.")
-    
-    # --- FIXED: REMEMBER THE INITIAL STORY ---
     st.session_state.initial_story = story_so_far
     
     lore_content = get_file_content("lore.html", "No lore was provided.")
@@ -106,15 +89,23 @@ for message in st.session_state.chat.history[2:]:
 if prompt := st.chat_input("What is your next action?"):
     with st.chat_message("human"):
         st.markdown(prompt)
+    
     response = st.session_state.chat.send_message(prompt)
+
     with st.chat_message("ai"):
-        st.markdown(response.text)
+        # 2. This is the crucial safety net to catch any blocked responses
+        try:
+            ai_message = response.candidates[0].content.parts[0].text
+        except (IndexError, ValueError):
+            ai_message = "⚠️ **The AI's response was blocked by a core safety filter.** This can happen even on the lowest setting. Please try a different action or rephrase your last one."
+            st.warning(f"Safety feedback: `{response.prompt_feedback}`")
+
+        st.markdown(ai_message)
     st.rerun()
 
 # --- SIDEBAR & SAVE BUTTON ---
 with st.sidebar:
     st.header("Game Controls")
     if st.button("💾 Save Progress to GitHub"):
-        # Use the corrected logic to get the full story
         full_story_text = get_full_story_string(st.session_state.initial_story, st.session_state.chat.history)
         save_progress_to_github(full_story_text)
