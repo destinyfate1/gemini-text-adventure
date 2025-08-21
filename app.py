@@ -10,6 +10,13 @@ st.set_page_config(page_title="Death in Aethel", page_icon="⚔️")
 try:
     # Configure Gemini API
     genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
+    # --- NEW: Added safety settings to be more tolerant of fantasy content ---
+    safety_settings = {
+        'HARM_CATEGORY_HARASSMENT': 'BLOCK_NONE',
+        'HARM_CATEGORY_HATE_SPEECH': 'BLOCK_NONE',
+        'HARM_CATEGORY_SEXUALLY_EXPLICIT': 'BLOCK_NONE',
+        'HARM_CATEGORY_DANGEROUS_CONTENT': 'BLOCK_NONE',
+    }
     model = genai.GenerativeModel('gemini-2.5-pro')
 
     # Configure GitHub API
