@@ -1,6 +1,7 @@
 import streamlit as st
 import google.generativeai as genai
-from google.generativeai.types import HarmCategory, HarmBlockThreshold
+# --- UPDATED: Using the 'types' module for the new safety setting style ---
+from google.generativeai import types
 from github import Github
 from github.GithubException import GithubException
 import random
@@ -13,14 +14,29 @@ try:
     # Configure Gemini API from Streamlit Secrets
     genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
     
+    # --- UPDATED: Safety settings now use the list-based style you provided ---
+    safety_settings = [
+        types.SafetySetting(
+            category=types.HarmCategory.HARM_CATEGORY_HARASSMENT,
+            threshold=types.HarmBlockThreshold.BLOCK_NONE,
+        ),
+        types.SafetySetting(
+            category=types.HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+            threshold=types.HarmBlockThreshold.BLOCK_NONE,
+        ),
+        types.SafetySetting(
+            category=types.HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+            threshold=types.HarmBlockThreshold.BLOCK_NONE,
+        ),
+        types.SafetySetting(
+            category=types.HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+            threshold=types.HarmBlockThreshold.BLOCK_NONE,
+        ),
+    ]
+    
     model = genai.GenerativeModel(
-        model_name='gemini-embedding-exp-03-07',
-        safety_settings={
-            HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: HarmBlockThreshold.OFF,
-            HarmCategory.HARM_CATEGORY_HATE_SPEECH: HarmBlockThreshold.OFF,
-            HarmCategory.HARM_CATEGORY_HARASSMENT: HarmBlockThreshold.OFF,
-            HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT: HarmBlockThreshold.OFF,
-        }
+        model_name='gemini-2.5-pro',
+        safety_settings=safety_settings
     )
 
     # Configure GitHub API from Streamlit Secrets
