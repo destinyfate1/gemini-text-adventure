@@ -14,7 +14,7 @@ try:
     genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
     
     model = genai.GenerativeModel(
-        model_name='gemini-2.5-pro',
+        model_name='gemini-embedding-exp-03-07',
         safety_settings={
             HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: HarmBlockThreshold.OFF,
             HarmCategory.HARM_CATEGORY_HATE_SPEECH: HarmBlockThreshold.OFF,
